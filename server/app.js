@@ -4,8 +4,8 @@ let socket = require('socket.io')
 // App setup
 let app = express()
 
-let server = app.listen(4000,function() {
-  console.log('listen to requests on port 4000')
+let server = app.listen(3000,function() {
+  console.log('listen to requests on port 3000')
 })
 
 // Static files
@@ -22,5 +22,6 @@ io.on('connection', function(socket) {
     console.log(data);
     let result = {data,id:socket.id}
     io.sockets.emit('chat', result)
+    // io.sockets.emit('chat',`${data.uname}您好,您的节操掉了`)
   })
 })

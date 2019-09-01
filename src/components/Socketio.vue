@@ -1,8 +1,8 @@
 <template>
   <div class="talk-room">
     <div class="word-wrap" ref="word"></div>
-    <input type="text" class="" placeholder="inp ur name" v-model="uname" />
-    <input type="text" class="" placeholder="inp ur message" v-model="word" />
+    <input type="text" key="1" class="" placeholder="inp ur name" v-model="uname" />
+    <input type="text" key="2" class="" placeholder="inp ur message" v-model="word" />
     <button class="btn" @click="clickBtn">Send</button>
   </div>
 </template>
@@ -10,10 +10,10 @@
   export default {
     data() {
       return {
-        uname: "user",
-        word: "message",
+        uname: "",
+        word: "",
         socket: {},
-        status:0
+        status: 0
       };
     },
     methods: {
@@ -22,32 +22,29 @@
           uname: this.uname,
           word: this.word
         });
-        // this.$refs.word.innerHTML += '<p><strong>'+this.uname+'</strong>:'+this.word+'</p>';
-        // this.showTalk();
       },
       getReturn() {
         let self = this;
         this.socket.on("chat", data => {
           console.log(data);
-          // console.log(self);
-          // console.log(this);
           self.uname = data.data.uname;
           self.word = data.data.word;
           self.status = data.id;
+          this.$refs.word.innerHTML += `<p><strong>${data.data.uname}</strong>:${data.data.word}</p>`
         });
-        return new Promise(resolve=>{
-          resolve(1)
-        })
       },
       showTalk() {
-        let newMsg = document.createElement('p');
+        if (this.uname == "") return;
+        if (this.word == "") return;
+        let newMsg = document.createElement("p");
         newMsg.innerHTML = `<strong>${this.uname}</strong>:${this.word}`;
         let parent = this.$refs.word;
         parent.appendChild(newMsg);
       }
     },
     created() {
-      this.socket = io.connect("http://127.0.0.1:4000");
+      this.socket = io.connect("http://127.0.0.1:3000");
+      this.getReturn();
     },
     mounted() {
       // this.getReturn();
@@ -55,17 +52,17 @@
       // this.$nextTick(() => {
       //   this.showTalk();
       // });
-      this.getReturn().then(res=>{
-        if(res==1) {
-          this.showTalk();
+      // this.getReturn().then(res=>{
+      // if(res==1) {
+      // this.showTalk();
       // this.$refs.word.innerHTML='<h1>123</h1>';
-        }
-      })
+      // }
+      // })
     },
-    watch:{
-      status() {
-        this.showTalk()
-      }
+    watch: {
+      // status() {
+      //   // this.showTalk();
+      // }
     }
   };
 </script>
