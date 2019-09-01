@@ -12,10 +12,13 @@ Vue.prototype.BScroll = BScroll;
 Vue.prototype.axios = axios;
 
 /* 导入socket.io */
-// import socketio from 'socket.io'
+// import VueSocketio from 'vue-socket.io'
+// import socketio from 'socket.io-client'
 
-// Vue.prototype.socketio = socketio;
+// Vue.use(VueSocketio,socketio('http://127.0.0.1:3000'))
 
+import socketio from 'socket.io-client'
+Vue.prototype.socketio = socketio;
 
 Vue.config.productionTip = false
 

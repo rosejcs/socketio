@@ -1,32 +1,25 @@
-const sio = require('socket.io');
-const http = require('http')
-const fs = require('fs')
+let express = require('express')
+let socket = require('socket.io')
 
+// App setup
+let app = express()
 
-const app  = http.createServer((req,res)=>{
-  res.writeHead(200,{'Content-Type':'text/html'})
-  res.end(fs.readFileSync('./index.html'))
+let server = app.listen(4000,function() {
+  console.log('listen to requests on port 4000')
 })
 
-app.listen(3000,()=>{console.log('3000listening...');})
+// Static files
+app.use(express.static('public'))
 
+// Socket setup
+let io = socket(server)
 
-// 创建socket服务器
-const socket = sio.listen(app)
-
-// 监听客户端的连接状态
-socket.on('connection',(socket)=>{
-  // 打印客户端的连接提示
-  console.log('客户端建立连接');
-  // 发送给客户端数据
-  socket.send('你好');
-
-  // 监听客户端发送过来的数据
-  socket.on('message',(msg)=>{
-    console.log('接收到一个消息',msg);
-  })
-  // 监听客户端的断开连接事件
-  socket.on('disconnect',()=>{
-    console.log('客户端断开连接');
+io.on('connection', function(socket) {
+  // every new socket connection build a new socket.id
+  console.log('made socket connection',socket.id)
+  
+  socket.on('chat', function(data) {
+    console.log(data);
+    io.sockets.emit('chat', data)
   })
 })
