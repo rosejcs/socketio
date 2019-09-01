@@ -20,6 +20,7 @@ io.on('connection', function(socket) {
   
   socket.on('chat', function(data) {
     console.log(data);
-    io.sockets.emit('chat', data)
+    let result = {data,id:socket.id}
+    io.sockets.emit('chat', result)
   })
 })

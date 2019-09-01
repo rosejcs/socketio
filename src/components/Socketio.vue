@@ -10,9 +10,10 @@
   export default {
     data() {
       return {
-        uname: "",
-        word: "",
-        socket: {}
+        uname: "user",
+        word: "message",
+        socket: {},
+        status:0
       };
     },
     methods: {
@@ -21,22 +22,24 @@
           uname: this.uname,
           word: this.word
         });
+        // this.$refs.word.innerHTML += '<p><strong>'+this.uname+'</strong>:'+this.word+'</p>';
+        // this.showTalk();
       },
       getReturn() {
         let self = this;
         this.socket.on("chat", data => {
           console.log(data);
-          console.log(self);
-          console.log(this);
-          self.uname = data.uname;
-          self.word = data.word;
+          // console.log(self);
+          // console.log(this);
+          self.uname = data.data.uname;
+          self.word = data.data.word;
+          self.status = data.id;
         });
         return new Promise(resolve=>{
           resolve(1)
         })
       },
       showTalk() {
-        // this.$refs.word.innerHTML += `<p><strong>${this.uname}</strong>:${this.word}</p>`;
         let newMsg = document.createElement('p');
         newMsg.innerHTML = `<strong>${this.uname}</strong>:${this.word}`;
         let parent = this.$refs.word;
@@ -55,11 +58,14 @@
       this.getReturn().then(res=>{
         if(res==1) {
           this.showTalk();
+      // this.$refs.word.innerHTML='<h1>123</h1>';
         }
       })
-
-      this.$refs.word
-
+    },
+    watch:{
+      status() {
+        this.showTalk()
+      }
     }
   };
 </script>
