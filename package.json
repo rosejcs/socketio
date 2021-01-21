@@ -20,7 +20,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.10.0",
     "@vue/cli-service": "^3.10.0",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.4.0",
     "vue-template-compiler": "^2.6.10"
   },
   "postcss": {
